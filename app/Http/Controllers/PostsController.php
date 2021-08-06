@@ -16,7 +16,7 @@ public function index()
 {
 $posts = Post::latest()->get();
 
-return view('posts.index', ['posts' => $posts]);
+return view('index', ['posts' => $posts]);
 }
 
 /**
@@ -26,7 +26,7 @@ return view('posts.index', ['posts' => $posts]);
 */
 public function create()
 {
-return view('posts.create');
+return view('create');
 }
 
 /**
@@ -51,7 +51,7 @@ return redirect('/posts');
 public function show(Post $post)
 {
 
-return view('posts.show', ['post' => $post]);
+return view('display', ['post' => $post]);
 }
 
 /**
@@ -63,7 +63,7 @@ return view('posts.show', ['post' => $post]);
 public function edit(Post $post)
 {
 
-return view('posts.edit', compact('post'));
+ return view('edit', compact('post'));
 }
 
 /**
@@ -80,6 +80,7 @@ $post->update($this->validatePost());
 return redirect('/posts/' .$post->id);
 }
 
+
 /**
 * Remove the specified resource from storage.
 *
@@ -87,12 +88,19 @@ return redirect('/posts/' .$post->id);
 * @return \Illuminate\Http\Response
 */
 
+public function destroy($id)
+    {
+        $post = Post::find($id);
+        $post->delete();
+        return redirect('/posts');
+    }
 protected function validatePost()
 {
 return request()->validate([
 'title' => 'required',
-'slug' => 'required',
+'excerpt' => 'required',
 'body' => 'required'
 ]);
 }
+
 }

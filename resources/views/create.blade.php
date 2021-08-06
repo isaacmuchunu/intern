@@ -1,8 +1,13 @@
-@extends ('layout')
-
-
-@section ('content')
-<h1>New Article</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>New Article</h1>
 <form method="POST" action="/posts">
 @csrf
 <label for="title">Title:</label><br>
@@ -11,10 +16,10 @@
 <p>{{ $errors->first('title') }}</p>
 @enderror
 
-<label for="slug">Slug:</label><br>
-<input type="slug" id="slug" name="slug" value="{{ old('slug') }}" required><br>
-@error('slug')
-<p>{{ $errors->first('slug') }}</p>
+<label for="excerpt">excerpt:</label><br>
+<input type="excerpt" id="excerpt" name="excerpt" value="{{ old('excerpt') }}" required><br>
+@error('excerpt')
+<p>{{ $errors->first('excerpt') }}</p>
 @enderror
 
 <label for="body">Content:</label><br>
@@ -25,4 +30,5 @@
 @enderror
 <input type="submit" value="Submit">
 </form>
-@endsection
+</body>
+</html>
