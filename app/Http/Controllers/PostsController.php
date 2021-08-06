@@ -86,11 +86,6 @@ return redirect('/posts/' .$post->id);
 * @param \App\Post $post
 * @return \Illuminate\Http\Response
 */
-public function destroy(Post $post)
-{
-$post->delete($this->validatePost());
-return redirect('/posts');
-}
 
 protected function validatePost()
 {
