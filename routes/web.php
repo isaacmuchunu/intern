@@ -14,12 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 //Route::get('/posts/{post}', 'PostsController@show');
 
-//LAYOUTS
-Route::get('/', function() {
-
-    return view('welcome');
-});
-
-Route::get('contact', function() {
-    return view('contact');
-});
+Route::get('/posts', 'PostsController@index');
+Route::post('/posts', 'PostsController@store');
+Route::get('/posts/create', 'PostsController@create');
+Route::get('/posts/{post}', 'PostsController@show');
+Route::get('/posts/{posts}/edit', 'PostsController@edit');
+Route::get('/posts/{post}', 'PostsController@update');
+Route::delete('/posts/{post}', 'PostsController@destroy');
