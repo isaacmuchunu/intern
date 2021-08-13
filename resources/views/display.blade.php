@@ -12,10 +12,13 @@
         </h2>
         <p>
         {{ $post->body }}
+        @foreach ($post->tags as $tag)
+        <p>
+        <a href='/posts?tag={{$tag->name}}'>{{$tag->name}}</a>
+        </p>
+        @endforeach
         </p>
 </body>
 </html>
 
-@section ('content')
 
-@endsection

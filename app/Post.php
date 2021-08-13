@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     protected $fillable = [
-        'title', 'body', 'slug'
+        'id','title', 'excerpt', 'body'
     ];
 
     public function user(){
-        return $this->hasOne(post::class);
+        return $this->belongsTo(user::class);
+    }
+    // many to many relationships
+    public function tags(){
+        return $this->belongsToMany(Tag::class);
     }
 }
+

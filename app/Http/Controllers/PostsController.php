@@ -1,106 +1,119 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Tag;
 use App\Post;
 use Illuminate\Http\Request;
 
 class PostsController extends Controller
 {
-/**
-* Display a listing of the resource.
-*
-* @return \Illuminate\Http\Response
-*/
-public function index()
-{
-$posts = Post::latest()->get();
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        if (request('tag')){
+            $posts = Tag::where('name', request('tag'))->firstOrFail()->posts;
+        } else {
+            $posts = Post::latest()->get();
+        }
 
-return view('index', ['posts' => $posts]);
-}
+        return view('index', ['posts' => $posts]);
+    }
 
-/**
-* Show the form for creating a new resource.
-*
-* @return \Illuminate\Http\Response
-*/
-public function create()
-{
-return view('create');
-}
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('create', [
+            'tags' => Tag::all()
+        ]);
+    }
 
-/**
-* Store a newly created resource in storage.
-*
-* @param \Illuminate\Http\Request $request
-* @return \Illuminate\Http\Response
-*/
-public function store(Request $request)
-{
-Post::create($this->validatePost());
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $this-> validatePost();
 
-return redirect('/posts');
-}
+        $post = new Post(request(['id','title', 'excerpt', 'body']));
+        $post->user_id = 1;
+        $post->save();
 
-/**
-* Display the specified resource.
-*
-* @param \App\Post $post
-* @return \Illuminate\Http\Response
-*/
-public function show(Post $post)
-{
+        $post->tags()->attach(request('tags'));
 
-return view('display', ['post' => $post]);
-}
+        return redirect('/posts');
+    }
 
-/**
-* Show the form for editing the specified resource.
-*
-* @param \App\Post $post
-* @return \Illuminate\Http\Response
-*/
-public function edit(Post $post)
-{
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Post $post)
+    {
 
- return view('edit', compact('post'));
-}
+        return view('display', ['post' => $post]);
 
-/**
-* Update the specified resource in storage.
-*
-* @param \Illuminate\Http\Request $request
-* @param \App\Post $post
-* @return \Illuminate\Http\Response
-*/
-public function update(Request $request, Post $post)
-{
-$post->update($this->validatePost());
+    }
 
-return redirect('/posts/' .$post->id);
-}
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Post $post)
+    {
 
+        return view('edit', compact('post'));
+    }
 
-/**
-* Remove the specified resource from storage.
-*
-* @param \App\Post $post
-* @return \Illuminate\Http\Response
-*/
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Post $post)
+    {
+        $post->update($this->validatePost());
 
-public function destroy($id)
+        return redirect('/posts/' .$post->id);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Post  $post
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
     {
         $post = Post::find($id);
         $post->delete();
+
         return redirect('/posts');
     }
-protected function validatePost()
-{
-return request()->validate([
-'title' => 'required',
-'excerpt' => 'required',
-'body' => 'required'
-]);
-}
 
+    protected function validatePost()
+    {
+        return request()->validate([
+            'title' => 'required',
+            'slug'  => 'required',
+            'body'  => 'required',
+            'tags'  => 'exists:tags,id'
+        ]);
+    }
 }

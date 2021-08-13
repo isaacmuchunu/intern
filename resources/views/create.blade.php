@@ -28,6 +28,24 @@
 @error('body')
 <p>{{ $errors->first('body') }}</p>
 @enderror
+<div class="field">
+    <label class="label" for="tags">Tags</label>
+
+    <div class="control">
+    <select
+    name="tags[]"
+    multiple
+    >
+         @foreach($tags as $tag)
+                <option value="{{$tag->id}}">{{$tag->name}}</option>
+         @endforeach
+    </select>
+         @error('tags')
+               <p class="help is-danger">{{ $message  }}</p>
+         @enderror
+    </div>
+</div>
+
 <input type="submit" value="Submit">
 </form>
 </body>
