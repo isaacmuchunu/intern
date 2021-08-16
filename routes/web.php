@@ -30,3 +30,6 @@ Route::delete('/posts/{post}', 'PostsController@destroy');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/contact', 'ContactsController@show');
+Route::post('/contact', 'ContactsController@store');
+
