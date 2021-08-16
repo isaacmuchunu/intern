@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 //Route::get('/posts/{post}', 'PostsController@show');
+Route::get('/', function () {
+    return view('welcome');
+
+});
 
 Route::get('/posts', 'PostsController@index');
 Route::post('/posts', 'PostsController@store');
@@ -21,3 +26,7 @@ Route::get('/posts/{post}', 'PostsController@show');
 Route::get('/posts/{posts}/edit', 'PostsController@edit');
 Route::put('/posts/{post}', 'PostsController@update');
 Route::delete('/posts/{post}', 'PostsController@destroy');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
