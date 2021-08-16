@@ -15,11 +15,18 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('excerpt');
+            $table->unsignedBigInteger('user_id');
             $table->string('title');
+            $table->string('excerpt');
             $table->text('body');
             $table->timestamps();
             $table->timestamp('published_at')->nullable();
+
+            // foreign key constraint to delete all posts belonging to a user  in  the event they are deleted on the user table.
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 
