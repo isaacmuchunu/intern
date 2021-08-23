@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Tag;
 use App\Post;
 use Illuminate\Http\Request;
+//use Illuminate\Support\Facades;
+use Illuminate\Support\Facades\Redirect;
 
 class PostsController extends Controller
 {
@@ -105,6 +107,7 @@ class PostsController extends Controller
         $post->delete();
 
         return redirect('/posts');
+        //Redirect::route('/posts');
     }
 
     protected function validatePost()
